@@ -15,7 +15,8 @@ ENV JAVA_VERSION_MAJOR=8 \
     LANC=en_US.UTF-8 \
     # Set environment
     JAVA_HOME=/usr/lib/jvm/current \
-    PATH=${PATH}:/usr/lib/jvm/current/jre/bin:/usr/lib/jvm/current/bin
+    PATH=${PATH}:/usr/lib/jvm/current/jre/bin:/usr/lib/jvm/current/bin \
+    LD_LIBRARY_PATH=/usr/lib/jvm/current/jre/lib/amd64:/usr/lib/jvm/current/jre/lib/amd64/server:/usr/lib/jvm/current/lib/amd64/jli
 
 RUN apk --no-cache --virtual=build-dependencies add --update wget curl tar ca-certificates && \
     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub && \
