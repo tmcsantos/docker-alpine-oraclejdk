@@ -9,10 +9,10 @@ MAINTAINER Tiago Santos <tsantos84@gmail.com>
 
 # Java Version
 ENV JAVA_VERSION_MAJOR=8 \
-    JAVA_VERSION_MINOR=131 \
-    JAVA_VERSION_BUILD=11 \
+    JAVA_VERSION_MINOR=144 \
+    JAVA_VERSION_BUILD=01 \
     JAVA_PACKAGE=jre \
-    LANC=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
     # Set environment
     JAVA_HOME=/usr/lib/jvm/current \
     PATH=${PATH}:/usr/lib/jvm/current/jre/bin:/usr/lib/jvm/current/bin \
@@ -30,7 +30,7 @@ RUN apk --no-cache --virtual=build-dependencies add --update wget curl tar ca-ce
     # Download and unarchive Java
 
     mkdir /opt && curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /tmp/java.tar.gz \
-    http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jre-8u131-linux-x64.tar.gz && \
+    http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jre-8u144-linux-x64.tar.gz && \
     mkdir -p /usr/lib/jvm && \
     tar -xzf /tmp/java.tar.gz -C /usr/lib/jvm && \
     ln -s /usr/lib/jvm/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} /usr/lib/jvm/current && \

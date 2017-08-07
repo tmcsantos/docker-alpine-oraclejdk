@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+#set -eo pipefail
 
 versions=( "$@" )
 if [ ${#versions[@]} -eq 0 ]; then
@@ -12,6 +12,10 @@ GLIBC_VERSION="2.25-r0"
 
 alpineVersions[7]='3.5'
 alpineVersions[8]='3.5'
+
+info() {
+    echo $1
+}
 
 die() {
     echo $1 >&2
@@ -38,7 +42,7 @@ for version in "${versions[@]}"; do # "8-jdk"
             javaSEURL=$(curl -s $archiveURL | grep "Java SE 7" | sed "s/.*href=\"\(.*\)\">Java SE 7<\/a>.*/\1/")
             ;;
         8)
-            javaSEURL=$(curl -s $oracleURL | grep -i "/${javaType}${javaVersion}-downloads" | grep -i "href" | sed "s|.*href=\"\(.*\)\">\(.*\)|\1|" | head -1)
+            javaSEURL=$(curl -s $oracleURL | grep -o 'href=['"'"'"][^"'"'"']*['"'"'"]' | sed -e 's/href=["'"'"']//' -e 's/["'"'"']$//' | grep -i "/${javaType}${javaVersion}-downloads" | head -1)
             ;;
     esac 
     javaSEURL=$oracleBaseURL$javaSEURL
@@ -47,7 +51,7 @@ for version in "${versions[@]}"; do # "8-jdk"
 
     oracleFullVersion=${javaVersion}u${javaVersionMinor}-b${javaVersionBuild}
     
-    echo "$version: $oracleFullVersion (alpine $alpineVersion)"
+    info "$version: $oracleFullVersion (alpine $alpineVersion)"
     
     dockerfileTemplate="Dockerfile.template"
     [ ! -f ${dockerfileTemplate} ] && die "Missing Dockerfile template: $dockerfileTemplate"

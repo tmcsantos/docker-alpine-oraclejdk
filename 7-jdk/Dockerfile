@@ -12,7 +12,7 @@ ENV JAVA_VERSION_MAJOR=7 \
     JAVA_VERSION_MINOR=80 \
     JAVA_VERSION_BUILD=15 \
     JAVA_PACKAGE=jdk \
-    LANC=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
     # Set environment
     JAVA_HOME=/usr/lib/jvm/current \
     PATH=${PATH}:/usr/lib/jvm/current/jre/bin:/usr/lib/jvm/current/bin \

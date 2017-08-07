@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+#set -eo pipefail
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -29,12 +29,12 @@ for version in "${versions[@]}"; do
 
     #docker build --rm --squash -t $dockerImage .
     #docker rmi $(docker images -a --filter=dangling=true -q) 2>/dev/null
-    echo "building $dockerImage"
+    echo -n "building $dockerImage"
     docker build --rm --pull -t $dockerImage $version 1> /dev/null && \
-    info "done" || die "failed"
+    info " [done] " || die " [fail] "
 
     # test
-    echo "testing $dockerImage"
+    echo -n "testing $dockerImage"
     docker run --rm $dockerImage java -version 2> /dev/null && \
-    info "good" || die "bad"
+    info " [OK] " || die " [FAILED]"
 done 
