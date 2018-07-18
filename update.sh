@@ -10,8 +10,8 @@ versions=( "${versions[@]%/}" )
 
 GLIBC_VERSION="2.25-r0"
 
-alpineVersions[7]='3.5'
-alpineVersions[8]='3.5'
+alpineVersions[7]='3.7'
+alpineVersions[8]='3.7'
 
 info() {
     echo $1
@@ -32,12 +32,12 @@ for version in "${versions[@]}"; do # "8-jdk"
     oracleURL="${oracleBaseURL}/technetwork/java/javase/downloads/index.html"
 
     oracleReleasesURL="https://www.java.com/en/download/faq/release_dates.xml"
-    javaVersionMinor=$(curl -s $oracleReleasesURL | grep "Java $javaVersion Update" | sed "s/.*Update \([0-9]*\).*/\1/g" | head -1)
+    javaVersionMinor=$(curl -s $oracleReleasesURL | grep "Java $javaVersion Update" | sed "s/.*Update \([0-9]*\).*/\1/g" | sort -urn | head -1)
 
     case "$javaVersion" in
         7)
             # find latest java version from Previous Releases
-            archiveURL=$(curl -s $oracleURL | grep -i "java archive" | grep -i "href" | sed "s|.*href=\"\(.*\)\">\(.*\)|\1|")
+            archiveURL=$(curl -s $oracleURL | grep -i "java archive" | grep -i "href" | sed "s|.*href=\"\(.*\)\">\(.*\)|\1|" | grep "archive")
             archiveURL=$oracleBaseURL$archiveURL
             javaSEURL=$(curl -s $archiveURL | grep "Java SE 7" | sed "s/.*href=\"\(.*\)\">Java SE 7<\/a>.*/\1/")
             ;;

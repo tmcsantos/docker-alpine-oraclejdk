@@ -3,14 +3,14 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM alpine:3.5
+FROM alpine:3.7
 
 MAINTAINER Tiago Santos <tsantos84@gmail.com>
 
 # Java Version
 ENV JAVA_VERSION_MAJOR=8 \
-    JAVA_VERSION_MINOR=144 \
-    JAVA_VERSION_BUILD=01 \
+    JAVA_VERSION_MINOR=171 \
+    JAVA_VERSION_BUILD=11 \
     JAVA_PACKAGE=server-jre \
     LANG=en_US.UTF-8 \
     # Set environment
@@ -18,7 +18,8 @@ ENV JAVA_VERSION_MAJOR=8 \
     PATH=${PATH}:/usr/lib/jvm/current/jre/bin:/usr/lib/jvm/current/bin \
     LD_LIBRARY_PATH=/usr/lib/jvm/current/jre/lib/amd64:/usr/lib/jvm/current/jre/lib/amd64/server:/usr/lib/jvm/current/lib/amd64/jli
 
-RUN apk --no-cache --virtual=build-dependencies add --update wget curl tar ca-certificates && \
+RUN apk --no-cache add --update procps && \
+    apk --no-cache --virtual=build-dependencies add --update wget curl tar ca-certificates procps && \
     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub && \
     wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-2.25-r0.apk && \
     wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-bin-2.25-r0.apk && \
@@ -26,16 +27,13 @@ RUN apk --no-cache --virtual=build-dependencies add --update wget curl tar ca-ce
     apk add glibc-2.25-r0.apk glibc-bin-2.25-r0.apk glibc-i18n-2.25-r0.apk && \
     /usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8 && \
     echo "export LANG=en_US.UTF-8" > /etc/profile.d/locale.sh && \
-
     # Download and unarchive Java
-
     mkdir /opt && curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /tmp/java.tar.gz \
-    http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/server-jre-8u144-linux-x64.tar.gz && \
+    http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/server-jre-8u171-linux-x64.tar.gz && \
     mkdir -p /usr/lib/jvm && \
     tar -xzf /tmp/java.tar.gz -C /usr/lib/jvm && \
     ln -s /usr/lib/jvm/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} /usr/lib/jvm/current && \
     apk del build-dependencies && \
-    
     # removing stuff we won't need
     rm -rf ${JAVA_HOME}/*src.zip \
            ${JAVA_HOME}/lib/missioncontrol \
